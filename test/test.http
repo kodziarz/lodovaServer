@@ -1,0 +1,39 @@
+# @host=server-gzd1qca9n-gregor47-pocztafm.vercel.app 
+@host=localhost
+@port=:3000/
+
+### login
+# @name loginQuery
+
+POST https://{{host}}{{port}}login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+### GET user
+
+GET http://{{host}}{{port}}user HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{loginQuery.response.body.access_token}}
+
+### GET locations list
+
+GET http://{{host}}{{port}}locations HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{loginQuery.response.body.access_token}}
+
+### GET root locations infos
+# @name locationInfosQuery
+
+GET http://{{host}}{{port}}locationInfos HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{loginQuery.response.body.access_token}}
+
+### GET root location
+
+GET http://{{host}}{{port}}rootLocation/{{locationInfosQuery.response.body.0.id}} HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{loginQuery.response.body.access_token}}
